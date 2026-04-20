@@ -1,7 +1,7 @@
 import allure
 import jsonschema
 import requests
-from .schemas.store_schema import STORE_SCHEMA
+from .schemas.store_schema import STORE_SCHEMA, ORDER_SCHEMA
 
 BASE_URL = "http://5.181.109.28:9090/api/v3"
 
@@ -31,6 +31,7 @@ class TestStore:
             assert response_json["quantity"] == payload["quantity"], "quantity заказа не совпал с ожидаемым"
             assert response_json["status"] == payload["status"], "status заказа не совпал с ожидаемым"
             assert response_json["complete"] == payload["complete"], "complete заказа не совпал с ожидаемым"
+            jsonschema.validate(response.json(), ORDER_SCHEMA)
 
     @allure.title("Получение информации о заказе по ID")
     def test_get_info_of_order_by_id(self, create_order):
